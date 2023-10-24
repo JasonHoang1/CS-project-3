@@ -1,5 +1,5 @@
 import java.util.*;
-njkknkjbnjfgk
+
 
 public class HousingDecisionMaker {
 
@@ -11,6 +11,9 @@ public class HousingDecisionMaker {
         boolean financialAid = false;
         boolean campusJob = false;
         boolean disability = false;
+        boolean probation = false;
+        boolean suspension = false;
+        
 
         System.out.println("enter your class year: \n1 for freshman\n2 for sophomore\n3 for junior\n4 for senior ");
         Scanner scnr = new Scanner(System.in);
@@ -23,6 +26,11 @@ public class HousingDecisionMaker {
         campusJob = scnr.nextBoolean();
         System.out.println("Do you have a disability? Enter true or false ");
         disability = scnr.nextBoolean();
+        System.out.println("Are you on academic probation? Enter true or false ");
+        probation = scnr.nextBoolean();
+        System.out.println("Are you on academic suspension? Enter true or false ");
+        suspension = scnr.nextBoolean();
+        
 
         switch (year) {
 
@@ -59,6 +67,13 @@ public class HousingDecisionMaker {
         if(disability == true) {
             x+= 1;
         }
+
+        if(probation == true){
+            x -=1;
+        }
+        if(suspension == true){
+            x -= 2;
+        } 
 
         System.out.println(x + " points");
 scnr.close();
