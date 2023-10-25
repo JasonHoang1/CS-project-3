@@ -90,7 +90,7 @@ System.out.println("enter your corrected class year: \n1 for freshman\n2 for sop
             x -= 2;
         } 
 
-    System.out.println(x + " points");
+    System.out.println("You have " + x + " points");
     scnr.close();
 
 
