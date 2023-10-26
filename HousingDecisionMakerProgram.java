@@ -28,22 +28,22 @@ public class HousingDecisionMakerProgram {
             if (year == 1)
             {
             x += 1;
-            example = true;
+            yearNumber = true;
             }
             else if (year == 2)
             {
             x+= 2;
-            example = true;
+            yearNumber = true;
             }
             else if (year == 3)
             {
             x+= 3;
-            example = true;
+            yearNumber = true;
             }
             else if (year == 4)
             {
             x+=4;
-            example = true;
+            yearNumber = true;
             }
         }
         else
