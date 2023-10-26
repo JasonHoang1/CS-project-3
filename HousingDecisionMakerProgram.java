@@ -61,7 +61,7 @@ System.out.println("enter your corrected class year: \n1 for freshman\n2 for sop
         campusJob = scnr.nextBoolean();
         System.out.println("Do you have a disability? Enter true or false ");
         disability = scnr.nextBoolean();
-        System.out.println("How far away do you live from campus?");
+        System.out.println("How far away do you live from campus? Enter a number in miles ");
         travelingDistance = scnr.nextInt();
        
 
