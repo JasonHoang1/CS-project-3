@@ -71,23 +71,19 @@ public class HousingDecisionMakerProgram {
         if(financialAid == true) {  // add a point if they are receiving aid
             x += 1;
         }
-
-
         if(campusJob == true) {     // add a point if they have a job on-campus
             x+= 1;
         }
-
         if(disability == true) {    // add a point of they have a disability
             x+= 1;
         }
-
         if (travelingDistance>=20 && travelingDistance <= 50) {    // if the user's distance is between or above a certain range, add points
              x+=1;
         }
         else if (travelingDistance>50) {
              x+=2;
         }
-        
+    
         System.out.println("You have " + x + " points");
     scnr.close();
 
