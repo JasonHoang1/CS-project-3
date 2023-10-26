@@ -48,7 +48,7 @@ public class HousingDecisionMakerProgram {
         }
         else
         {
-System.out.println("enter your corrected class year: \n1 for freshman\n2 for sophomore\n3 for junior\n4 for senior ");
+        System.out.println("enter your corrected class year: \n1 for freshman\n2 for sophomore\n3 for junior\n4 for senior ");
          year = scnr.nextInt();
         }
     }
