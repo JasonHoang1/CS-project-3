@@ -8,19 +8,18 @@ public class HousingDecisionMakerProgram {
         int x = 0;
         int year;
         int age;
+        int travelingDistance;
         boolean financialAid = false;
         boolean campusJob = false;
         boolean disability = false;
-        boolean probation = false;
-        boolean suspension = false;
-        boolean example = false;
+        boolean yearNumber = false;
 
         System.out.println("enter your class year: \n1 for freshman\n2 for sophomore\n3 for junior\n4 for senior ");
         Scanner scnr = new Scanner(System.in);
         
         year = scnr.nextInt();
 
-       while(example == false)  // while false, ask the user for their correct input.
+       while(yearNumber == false)  // while false, ask the user for their correct grade level.
        {
        
         if (year>=1 && year <=4)
@@ -62,45 +61,35 @@ System.out.println("enter your corrected class year: \n1 for freshman\n2 for sop
         campusJob = scnr.nextBoolean();
         System.out.println("Do you have a disability? Enter true or false ");
         disability = scnr.nextBoolean();
-        System.out.println("Are you on academic probation? Enter true or false ");
-        probation = scnr.nextBoolean();
-        System.out.println("Are you on academic suspension? Enter true or false ");
-        suspension = scnr.nextBoolean();
+        System.out.println("How far away do you live from campus?");
+        travelingDistance = scnr.nextInt();
+       
 
-        if(age < 21) {
+        if(age < 21) {     // add a point if under 21 years of age
             x += 1;
         }
-        if(financialAid == true) {
+        if(financialAid == true) {  // add a point if they are receiving aid
             x += 1;
         }
 
 
-        if(campusJob == true) {
+        if(campusJob == true) {     // add a point if they have a job on-campus
             x+= 1;
         }
 
-        if(disability == true) {
+        if(disability == true) {    // add a point of they have a disability
             x+= 1;
         }
 
-        if(probation == true){
-            x -=1;
+        if (travelingDistance>=20 && travelingDistance <= 50) {    // if the user's distance is between or above a certain range, add points
+             x+=1;
         }
-        if(suspension == true){
-            x -= 2;
-        } 
-
-    System.out.println("You have " + x + " points");
+        else if (travelingDistance>50) {
+             x+=2;
+        }
+        
+        System.out.println("You have " + x + " points");
     scnr.close();
-
-
-
-
-
-
-
-
-
 
     }
 
