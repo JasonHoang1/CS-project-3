@@ -74,10 +74,10 @@ public class HousingDecisionMakerProgram {
         if(campusJob == true) {     // add a point if they have a job on-campus
             x+= 1;
         }
-        if(disability == true) {    // add a point of they have a disability
+        if(disability == true) {    // add a point if they have a disability
             x+= 1;
         }
-        if (travelingDistance>=20 && travelingDistance <= 50) {    // if the user's distance is between or above a certain range, add points
+        if (travelingDistance>=20 && travelingDistance <= 50) {    // if distance is between or above a range, add points
              x+=1;
         }
         else if (travelingDistance>50) {
