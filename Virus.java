@@ -19,7 +19,7 @@ public class EpidemicSimulation {
             numPeople = scanner.nextInt();
         } while (!isPerfectSquare(numPeople));
 
-        System.out.print("Enter the number of time steps(value greater than 0): ");
+        System.out.print("Enter the number of time steps(integer greater than 0): ");
         timesteps = scanner.nextInt();
 
         do {
