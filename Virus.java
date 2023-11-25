@@ -1,6 +1,8 @@
 package inClass;
-
-
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -8,8 +10,8 @@ public class EpidemicSimulation {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        int numPeople;//number of people
-        int timesteps;// number of time step
+        int numPeople; // number of people
+        int timesteps; // number of time step
         double alpha;
         double beta;
 
@@ -19,7 +21,7 @@ public class EpidemicSimulation {
             numPeople = scanner.nextInt();
         } while (!isPerfectSquare(numPeople));
 
-        System.out.print("Enter the number of time steps(integer greater than 0): ");
+        System.out.print("Enter the number of time steps (integer value greater than 0): ");
         timesteps = scanner.nextInt();
 
         do {
@@ -122,6 +124,9 @@ public class EpidemicSimulation {
             // Print the 2D array
             printGrid(result.grid);
 
+            // Write the 2D array to a text file
+            writeGridToFile(result.grid, "time_step_" + timeStep + ".txt");
+
             System.out.println();
         }
 
@@ -146,18 +151,17 @@ public class EpidemicSimulation {
             return alpha * (double) infectedNeighbors / totalNeighbors;
         }
 
-
         private char[][] initializeGrid(int N) {
             char[][] grid = new char[(int) Math.sqrt(N)][(int) Math.sqrt(N)];
             Random random = new Random();
-            
+
             // Initialize the grid with all individuals as 'S'
             for (int i = 0; i < grid.length; i++) {
                 for (int j = 0; j < grid[i].length; j++) {
                     grid[i][j] = 'S';
                 }
             }
-            
+
             // Place the infected individual at a random location
             int randomX = random.nextInt(grid.length);
             int randomY = random.nextInt(grid[0].length);
@@ -182,6 +186,19 @@ public class EpidemicSimulation {
                     System.out.print(grid[i][j] + " ");
                 }
                 System.out.println();
+            }
+        }
+
+        private void writeGridToFile(char[][] grid, String fileName) {
+            try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+                for (int i = 0; i < grid.length; i++) {
+                    for (int j = 0; j < grid[i].length; j++) {
+                        writer.print(grid[i][j] + " ");
+                    }
+                    writer.println();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
