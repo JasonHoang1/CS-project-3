@@ -1,5 +1,6 @@
 package inClass;
 
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -7,19 +8,19 @@ public class EpidemicSimulation {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        int N;//number of people
-        int T;// number of time step
+        int numPeople;//number of people
+        int timesteps;// number of time step
         double alpha;
         double beta;
 
         // Prompt user for input and validate it
         do {
             System.out.print("Enter the number of individuals (perfect square): ");
-            N = scanner.nextInt();
-        } while (!isPerfectSquare(N));
+            numPeople = scanner.nextInt();
+        } while (!isPerfectSquare(numPeople));
 
         System.out.print("Enter the number of time steps(value greater than 0): ");
-        T = scanner.nextInt();
+        timesteps = scanner.nextInt();
 
         do {
             System.out.print("Enter the infection rate (0 <= α <= 1): ");
@@ -32,7 +33,7 @@ public class EpidemicSimulation {
         } while (beta < 0 || beta > 1);
 
         // Create an instance of EpidemicSimulator
-        EpidemicSimulator simulator = new EpidemicSimulator(N, T, alpha, beta);
+        EpidemicSimulator simulator = new EpidemicSimulator(numPeople, timesteps, alpha, beta);
 
         // Run the simulation
         simulator.runSimulation();
