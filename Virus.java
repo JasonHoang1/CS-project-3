@@ -7,8 +7,8 @@ public class EpidemicSimulation {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        int N;
-        int T;
+        int N;//number of people
+        int T;// number of time step
         double alpha;
         double beta;
 
@@ -18,7 +18,7 @@ public class EpidemicSimulation {
             N = scanner.nextInt();
         } while (!isPerfectSquare(N));
 
-        System.out.print("Enter the number of time steps: ");
+        System.out.print("Enter the number of time steps(value greater than 0): ");
         T = scanner.nextInt();
 
         do {
