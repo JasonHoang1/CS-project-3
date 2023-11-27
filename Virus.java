@@ -67,21 +67,21 @@ public class EpidemicSimulation {
     // Epidemic Simulator Class
     static class EpidemicSimulator {
         private char[][] grid;
-        private int N;
-        private int T;
+        private int numPeople;
+        private int timesteps;
         private double alpha;
         private double beta;
 
-        public EpidemicSimulator(int N, int T, double alpha, double beta) {
-            this.N = N;
-            this.T = T;
+        public EpidemicSimulator(int numPeople, int timesteps, double alpha, double beta) {
+            this.numPeople = numPeople;
+            this.timesteps = timesteps;
             this.alpha = alpha;
             this.beta = beta;
-            this.grid = initializeGrid(N);
+            this.grid = initializeGrid(numPeople);
         }
 
         public void runSimulation() {
-            for (int t = 1; t <= T; t++) {
+            for (int t = 1; t <= timesteps; t++) {
                 SimulationResult result = simulateEpidemic();
                 printSimulationResult(t, result);
             }
@@ -118,7 +118,7 @@ public class EpidemicSimulation {
             System.out.println("Time Step " + timeStep + ":");
             System.out.println("Infected: " + result.infectedCount);
             System.out.println("Recovered: " + result.recoveredCount);
-            System.out.println("Susceptible: " + (N - result.infectedCount - result.recoveredCount));
+            System.out.println("Susceptible: " + (numPeople - result.infectedCount - result.recoveredCount));
             System.out.println("Infection Ratio: " + result.infectionRatio);
 
             // Print the 2D array
