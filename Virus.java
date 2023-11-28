@@ -1,8 +1,5 @@
 package inClass;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -11,7 +8,7 @@ public class EpidemicSimulation {
         Scanner scanner = new Scanner(System.in);
 
         int numPeople; // number of people
-        int timesteps; // number of time step
+        int timesteps; // number of time steps
         double alpha;
         double beta;
 
@@ -66,20 +63,22 @@ public class EpidemicSimulation {
 
     // Epidemic Simulator Class
     static class EpidemicSimulator {
-        private char[][] grid;
-        private int numPeople;
-        private int timesteps;
-        private double alpha;
-        private double beta;
+        private char[][] grid; // 2D grid representing individuals
+        private int numPeople; // total number of individuals
+        private int timesteps; // total number of time steps
+        private double alpha; // infection rate
+        private double beta; // recovery rate
 
+        // Constructor to initialize the simulator with user-defined parameters
         public EpidemicSimulator(int numPeople, int timesteps, double alpha, double beta) {
             this.numPeople = numPeople;
             this.timesteps = timesteps;
             this.alpha = alpha;
             this.beta = beta;
-            this.grid = initializeGrid(numPeople);
+            this.grid = initializeGrid(numPeople); // Initialize the grid of individuals
         }
 
+        // Method to run the epidemic simulation for the specified number of time steps
         public void runSimulation() {
             for (int t = 1; t <= timesteps; t++) {
                 SimulationResult result = simulateEpidemic();
@@ -87,33 +86,37 @@ public class EpidemicSimulation {
             }
         }
 
+        // Method to simulate the epidemic spread for one time step
         private SimulationResult simulateEpidemic() {
             int infectedCount = 0;
             int recoveredCount = 0;
             int totalIndividuals = grid.length * grid[0].length;
 
+            // Iterate through the grid to update individual states based on SIR model
             for (int i = 0; i < grid.length; i++) {
                 for (int j = 0; j < grid[i].length; j++) {
                     char status = grid[i][j];
                     if (status == 'S') {
                         double infectionProbability = calculateInfectionProbability(i, j);
                         if (Math.random() < infectionProbability) {
-                            grid[i][j] = 'I';
+                            grid[i][j] = 'I'; // Individual becomes infected
                             infectedCount++;
                         }
                     } else if (status == 'I') {
                         if (Math.random() < beta) {
-                            grid[i][j] = 'R';
+                            grid[i][j] = 'R'; // Infected individual recovers
                             recoveredCount++;
                         }
                     }
                 }
             }
 
+            // Calculate the infection ratio
             double infectionRatio = (double) infectedCount / totalIndividuals;
             return new SimulationResult(cloneGrid(grid), infectedCount, recoveredCount, infectionRatio);
         }
 
+        // Method to print the results of the simulation for one time step
         private void printSimulationResult(int timeStep, SimulationResult result) {
             System.out.println("Time Step " + timeStep + ":");
             System.out.println("Infected: " + result.infectedCount);
@@ -121,15 +124,13 @@ public class EpidemicSimulation {
             System.out.println("Susceptible: " + (numPeople - result.infectedCount - result.recoveredCount));
             System.out.println("Infection Ratio: " + result.infectionRatio);
 
-            // Print the 2D array
+            // Print the 2D array representing the grid of individuals
             printGrid(result.grid);
-
-            // Write the 2D array to a text file
-            writeGridToFile(result.grid, "time_step_" + timeStep + ".txt");
 
             System.out.println();
         }
 
+        // Method to calculate the infection probability for an individual based on neighbors
         private double calculateInfectionProbability(int x, int y) {
             int infectedNeighbors = 0;
             int totalNeighbors = 0;
@@ -137,6 +138,7 @@ public class EpidemicSimulation {
             int[] dx = {0, 0, 1, -1};
             int[] dy = {1, -1, 0, 0};
 
+            // Iterate through neighbors to count infected neighbors
             for (int i = 0; i < 4; i++) {
                 int newX = x + dx[i];
                 int newY = y + dy[i];
@@ -148,9 +150,11 @@ public class EpidemicSimulation {
                 }
             }
 
+            // Calculate infection probability based on SIR model parameters
             return alpha * (double) infectedNeighbors / totalNeighbors;
         }
 
+        // Method to initialize the grid with individuals and place an infected individual randomly
         private char[][] initializeGrid(int N) {
             char[][] grid = new char[(int) Math.sqrt(N)][(int) Math.sqrt(N)];
             Random random = new Random();
@@ -170,6 +174,7 @@ public class EpidemicSimulation {
             return grid;
         }
 
+        // Method to clone a 2D array (grid)
         private char[][] cloneGrid(char[][] original) {
             char[][] clone = new char[original.length][original[0].length];
             for (int i = 0; i < original.length; i++) {
@@ -180,25 +185,13 @@ public class EpidemicSimulation {
             return clone;
         }
 
+        // Method to print the 2D array (grid)
         private void printGrid(char[][] grid) {
             for (int i = 0; i < grid.length; i++) {
                 for (int j = 0; j < grid[i].length; j++) {
                     System.out.print(grid[i][j] + " ");
                 }
                 System.out.println();
-            }
-        }
-
-        private void writeGridToFile(char[][] grid, String fileName) {
-            try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
-                for (int i = 0; i < grid.length; i++) {
-                    for (int j = 0; j < grid[i].length; j++) {
-                        writer.print(grid[i][j] + " ");
-                    }
-                    writer.println();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }
