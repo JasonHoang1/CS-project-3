@@ -1,130 +1,104 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-public class AppClient {
-    private Scanner scan;
-    private ArrayList<Appliance> appliances = new ArrayList<>();
+class AppClient {
+    private List<Appliance> appliances = new ArrayList<>();
 
-    // Method to read appliance details from a file
     public void readAppFile(String file) {
+        Scanner scan;
         try {
             File myFile = new File(file);
             scan = new Scanner(myFile);
 
             while (scan.hasNextLine()) {
-                // Split the line into individual details using ","
-                String[] applianceDetails = scan.nextLine().split(",");
-                int locationID = Integer.parseInt(applianceDetails[0]);
-                String appName = applianceDetails[1];
-                int onPower = Integer.parseInt(applianceDetails[2]);
-                float probOn = Float.parseFloat(applianceDetails[3]);
-                String appType = applianceDetails[4];
-                int lowPower = Integer.parseInt(applianceDetails[5]);
+                String[] data = scan.nextLine().split(",");
+                int locationID = Integer.parseInt(data[0]);
+                String appName = data[1];
+                int onPower = Integer.parseInt(data[2]);
+                float probOn = Float.parseFloat(data[3]);
+                String appType = data[4];
+                int lowPower = appType.equals("true") ? Integer.parseInt(data[5]) : 0;
 
-                // Create a new Appliance object and add it to the list
-                Appliance aAppl = new Appliance(locationID, appName, onPower, probOn, appType, lowPower);
+                Appliance aAppl;
+                if (appType.equals("true")) {
+                    aAppl = new SmartAppliance(locationID, appName, onPower, lowPower, probOn);
+                } else {
+                    aAppl = new RegularAppliance(locationID, appName, onPower, probOn);
+                }
+
                 appliances.add(aAppl);
             }
+            System.out.println("Appliances loaded successfully!");
             scan.close();
         } catch (IOException ioe) {
             System.out.println("The file can not be read");
         }
     }
 
-    // Method to add a new appliance
     public void addAppliance() {
-        System.out.println("Enter location ID:");
-        int locationID = Integer.parseInt(scan.nextLine());
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter appliance name:");
-        String appName = scan.nextLine();
+        System.out.print("Enter location ID: ");
+        int locationID = scanner.nextInt();
+        scanner.nextLine();  // Consume newline
+        System.out.print("Enter appliance name: ");
+        String appName = scanner.nextLine();
+        System.out.print("Enter on power: ");
+        int onPower = scanner.nextInt();
+        System.out.print("Enter probability of staying on: ");
+        float probOn = scanner.nextFloat();
+        scanner.nextLine();  // Consume newline
+        System.out.print("Is it a smart appliance? (true/false): ");
+        boolean isSmart = scanner.nextBoolean();
+        int lowPower = 0;
 
-        System.out.println("Enter on power:");
-        int onPower = Integer.parseInt(scan.nextLine());
-
-        System.out.println("Enter probability of staying on:");
-        float probOn = Float.parseFloat(scan.nextLine());
-
-        System.out.println("Enter smart (true/false):");
-        boolean isSmart = Boolean.parseBoolean(scan.nextLine());
-
-        System.out.println("Enter power reduction percent when changed to low status (floating point, e.g., 0.33 for 33% reduction):");
-        float probSmart = isSmart ? Float.parseFloat(scan.nextLine()) : 0.0f;
-
-        // Create a new Appliance object and add it to the list
-        Appliance newAppliance = new Appliance(locationID, appName, onPower, probOn, isSmart, probSmart);
-        appliances.add(newAppliance);
-        System.out.println("Appliance added successfully.");
-    }
-
-    // Method to delete an existing appliance
-    public void deleteAppliance() {
-        System.out.println("Enter the name of the appliance to delete:");
-        String applianceName = scan.nextLine();
-
-        // Remove the appliance with the specified name from the list
-        appliances.removeIf(appliance -> appliance.getName().equals(applianceName));
-        System.out.println("Appliance deleted successfully.");
-    }
-
-    // Method to list all existing appliances
-    public void listAppliances() {
-        System.out.println("List of Appliances:");
-        for (Appliance appliance : appliances) {
-            System.out.println(appliance.toString());
+        if (isSmart) {
+            System.out.print("Enter low power for smart appliance: ");
+            lowPower = scanner.nextInt();
         }
-        System.out.println("End of List");
+
+        Appliance newAppliance;
+        if (isSmart) {
+            newAppliance = new SmartAppliance(locationID, appName, onPower, lowPower, probOn);
+        } else {
+            newAppliance = new RegularAppliance(locationID, appName, onPower, probOn);
+        }
+
+        appliances.add(newAppliance);
+        System.out.println("Appliance added successfully!");
     }
 
-    // Method to start the simulation
-    public void startSimulation(double totalAllowedWattage, String filePath, int simulationLength) {
-        // Placeholder for simulation logic
-        System.out.println("Simulation is starting. Implement your simulation logic here.");
-        System.out.println("Total Allowed Wattage: " + totalAllowedWattage);
-        System.out.println("File Path: " + filePath);
-        System.out.println("Simulation Length: " + simulationLength);
+    public void deleteAppliance() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the appliance ID to delete: ");
+        int applianceIDToDelete = scanner.nextInt();
+
+        for (Appliance appliance : appliances) {
+            if (appliance.getApplianceID() == applianceIDToDelete) {
+                appliances.remove(appliance);
+                System.out.println("Appliance deleted successfully!");
+                return;
+            }
+        }
+
+        System.out.println("Appliance not found with ID: " + applianceIDToDelete);
     }
 
-    // Main method
+    public void listAppliances() {
+        for (Appliance appliance : appliances) {
+            System.out.println(appliance);
+        }
+    }
+
     public static void main(String[] args) {
         AppClient app = new AppClient();
-        app.scan = new Scanner(System.in);
+        Scanner scan = new Scanner(System.in);
 
-        // Prompt for total allowed wattage
-        System.out.println("Enter the total allowed wattage (power):");
-        double totalAllowedWattage = 0.0;
-        boolean validTotalWattage = false;
-        while (!validTotalWattage) {
-            try {
-                totalAllowedWattage = Double.parseDouble(app.scan.nextLine());
-                validTotalWattage = true;
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid number for total allowed wattage.");
-            }
-        }
-
-        // Prompt for comma-separated text file containing appliances
-        System.out.println("Enter the path of the comma-separated text file containing the appliances:");
-        String filePath = app.scan.nextLine();
-
-        // Prompt for simulation length in timesteps
-        System.out.println("Enter the simulation length in timesteps:");
-        int simulationLength = 0;
-        boolean validSimulationLength = false;
-        while (!validSimulationLength) {
-            try {
-                simulationLength = Integer.parseInt(app.scan.nextLine());
-                validSimulationLength = true;
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid integer for simulation length.");
-            }
-        }
-
-        // Main program loop
         while (true) {
-            // Display menu
             System.out.println("Select an option:");
             System.out.println("Type \"A\" Add an appliance");
             System.out.println("Type \"D\" Delete an appliance");
@@ -132,12 +106,9 @@ public class AppClient {
             System.out.println("Type \"F\" Read Appliances from a file");
             System.out.println("Type \"S\" To Start the simulation");
             System.out.println("Type \"Q\" Quit the program");
+            String option1 = scan.nextLine().toUpperCase();
 
-            // Get user input
-            String option1 = app.scan.nextLine();
-
-            // Perform actions based on user input
-            switch (option1.toUpperCase()) {
+            switch (option1) {
                 case "A":
                     app.addAppliance();
                     break;
@@ -148,17 +119,18 @@ public class AppClient {
                     app.listAppliances();
                     break;
                 case "F":
+                    System.out.print("Enter the path to the appliance file: ");
+                    String filePath = scan.nextLine();
                     app.readAppFile(filePath);
                     break;
                 case "S":
-                    app.startSimulation(totalAllowedWattage, filePath, simulationLength);
+                    // Implement simulation start logic
                     break;
                 case "Q":
-                    app.scan.close();
+                    System.out.println("Quitting the program. Goodbye!");
                     System.exit(0);
-                    break;
                 default:
-                    System.out.println("Invalid option. Try again.");
+                    System.out.println("Invalid option. Please try again.");
             }
         }
     }
