@@ -124,8 +124,30 @@ class AppClient {
                     app.readAppFile(filePath);
                     break;
                 case "S":
-                    // Implement simulation start logic
+                    System.out.print("Enter the number of simulation steps: ");
+                    int numSteps = scan.nextInt();
+
+                    for (int step = 1; step <= numSteps; step++) {
+                        System.out.println("Simulation Step: " + step);
+                        
+                        // Iterate through each appliance and simulate its behavior
+                        for (Appliance appliance : app.appliances) {
+                            boolean isTurnedOn = appliance.isTurnedOn();
+
+                            if (isTurnedOn) {
+                                System.out.println(appliance.getAppName() + " is turned on at location " + appliance.getLocationID());
+                            } else {
+                                System.out.println(appliance.getAppName() + " is turned off at location " + appliance.getLocationID());
+                            }
+
+                            // You can add more simulation logic here based on the appliance's state
+                            // For example, if it's a smart appliance, you can simulate switching to low power.
+                        }
+
+                        System.out.println(); // Add a newline for better readability between simulation steps
+                    }
                     break;
+
                 case "Q":
                     System.out.println("Quitting the program. Goodbye!");
                     System.exit(0);
