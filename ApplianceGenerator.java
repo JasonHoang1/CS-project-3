@@ -66,6 +66,7 @@ Smart appliances (if "on") power reduction percent when changed to "low" status(
 					bw.write(String.valueOf(app[index].probSmart));
 					bw.newLine( );
 					bw.flush();
+					
 				}
 			}
 		}
