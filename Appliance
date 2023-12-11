@@ -70,14 +70,14 @@ class RegularAppliance extends Appliance {
 }
 
 class SmartAppliance extends Appliance {
-    private int lowPower;
+    private double lowPower;
 
-    public SmartAppliance(int locationID, String appName, int onPower, int lowPower, float probOn) {
+    public SmartAppliance(int locationID, String appName, int onPower, double lowPower, float probOn) {
         super(locationID, appName, onPower, probOn);
         this.lowPower = lowPower;
     }
 
-    public int getLowPower() {
+    public double getLowPower() {
         return lowPower;
     }
 
