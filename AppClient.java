@@ -20,7 +20,9 @@ class AppClient {
                 int onPower = Integer.parseInt(data[2]);
                 float probOn = Float.parseFloat(data[3]);
                 String appType = data[4];
-                int lowPower = appType.equals("true") ? Integer.parseInt(data[5]) : 0;
+                double lowPower = 0.0;
+                if (appType.equals("true"))
+                lowPower = Double.parseDouble(data[5]);
 
                 Appliance aAppl;
                 if (appType.equals("true")) {
@@ -32,7 +34,7 @@ class AppClient {
                 appliances.add(aAppl);
             }
             System.out.println("Appliances loaded successfully!");
-            scan.close();
+          
         } catch (IOException ioe) {
             System.out.println("The file can not be read");
         }
@@ -69,13 +71,14 @@ class AppClient {
 
         appliances.add(newAppliance);
         System.out.println("Appliance added successfully!");
+       
     }
 
     public void deleteAppliance() {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scnr = new Scanner(System.in);
 
         System.out.print("Enter the appliance ID to delete: ");
-        int applianceIDToDelete = scanner.nextInt();
+        int applianceIDToDelete = scnr.nextInt();
 
         for (Appliance appliance : appliances) {
             if (appliance.getApplianceID() == applianceIDToDelete) {
@@ -86,6 +89,7 @@ class AppClient {
         }
 
         System.out.println("Appliance not found with ID: " + applianceIDToDelete);
+      
     }
 
     public void listAppliances() {
@@ -151,8 +155,11 @@ class AppClient {
                 case "Q":
                     System.out.println("Quitting the program. Goodbye!");
                     System.exit(0);
+                    break;
                 default:
                     System.out.println("Invalid option. Please try again.");
+                    break;
+                   
             }
         }
     }
